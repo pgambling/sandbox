@@ -1,0 +1,8 @@
+{
+  "name": "aws-route53-dyndns",
+  "version": "0.0.1",
+  "dependencies": {
+    "aws-sdk": "^2.799.0"
+  },
+  "devDependencies": {}
+}

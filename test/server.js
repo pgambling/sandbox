@@ -12,7 +12,7 @@ app.post("/", (req, res) => {
 app.post("/wifi-state", (req, res) => {
   const fileName = 'wifi-state.json';
   const data = JSON.parse(fs.readFileSync(fileName));
-  data.push(req.body);
+  data.push({ ...req.body, receivedActual: (new Date()).toString() });
   fs.writeFileSync(fileName, JSON.stringify(data, null, 2))
   res.end();
 })

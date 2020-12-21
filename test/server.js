@@ -29,7 +29,7 @@ app.post("/wifi-state", (req, res) => {
   const devicesPresent = Object.values(state).reduce((count, { status }) => status === 'connected' ? count+1 : count, 0);
 
   fs.writeFileSync(fileName, JSON.stringify(state, null, 2))
-  res.send({ devicesPresent });
+  res.send({ value1: devicesPresent });
 })
 
 console.log('Server listening on port 3000')

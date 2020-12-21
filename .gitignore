@@ -1,1 +1,3 @@
 .DS_Store
+test/wifi-state.json
+test/config.json

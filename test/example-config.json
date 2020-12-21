@@ -1,0 +1,4 @@
+{
+  "devices": ["my-device", "your-device"],
+  "authToken": "some UUID"
+}

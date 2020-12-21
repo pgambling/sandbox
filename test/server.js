@@ -1,6 +1,8 @@
 const fs = require('fs');
 const express = require("express");
 
+const CONFIG = require('./config.json')
+
 const app = express();
 app.use(express.json())
 
@@ -11,15 +13,17 @@ app.post("/", (req, res) => {
 });
 
 app.post("/wifi-state", (req, res) => {
+  const { authToken, device, status, time } = req.body;
+
+  if (CONFIG.authToken && CONFIG.authToken !== authToken) return res.sendStatus(403);
+  if (!CONFIG.devices.includes(device)) return res.status(400).send({ error: "Unknown device" });
+
   const fileName = 'wifi-state.json';
   let state = {};
-
   if (fs.existsSync(fileName)) {
     state = JSON.parse(fs.readFileSync(fileName));
   }
   
-  const { device, status, time } = req.body;
-
   state[device] = { status, time, received: (new Date()).toString() };
 
   const devicesPresent = Object.values(state).reduce((count, { status }) => status === 'connected' ? count+1 : count, 0);

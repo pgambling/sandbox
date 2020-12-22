@@ -12,11 +12,34 @@ app.post("/", (req, res) => {
   res.end();
 });
 
+function logError (message, data) {
+  const fname = 'debug.json';
+  let errorLog = [];
+  
+  if (fs.existsSync(fname)) {
+    errorLog = JSON.parse(fs.readFileSync(fname));
+  }
+  
+  errorLog.push({ 
+    data,
+    message,
+    time: (new Date()).toString()
+  });
+  fs.writeFileSync(fname, JSON.stringify(errorLog, null, 2));
+}
+
 app.post("/wifi-state", (req, res) => {
   const { authToken, device, status, time } = req.body;
 
-  if (CONFIG.authToken && CONFIG.authToken !== authToken) return res.sendStatus(403);
-  if (!CONFIG.devices.includes(device)) return res.status(400).send({ error: "Unknown device" });
+  if (CONFIG.authToken && CONFIG.authToken !== authToken) {
+    logError(`authToken did not match ${CONFIG.authToken}`, req.body)
+    return res.sendStatus(403);
+  }
+
+  if (!CONFIG.devices.includes(device)) {
+    logError(`Unknown device: ${device}`, req.body)
+    return res.status(400).send({ error: "Unknown device" });
+  }
 
   const fileName = 'wifi-state.json';
   let state = {};

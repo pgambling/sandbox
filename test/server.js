@@ -28,17 +28,17 @@ function logError (message, data) {
   fs.writeFileSync(fname, JSON.stringify(errorLog, null, 2));
 }
 
-app.post("/wifi-state", (req, res) => {
-  console.log(`[${(new Date()).toISOString()}] Received POST /wifi-state request: ${JSON.stringify(req.body, null, 2)}`)
-  const { authToken, device, status, time } = req.body;
+app.get("/wifi-state", (req, res) => {
+  console.log(`[${(new Date()).toISOString()}] Received GET /wifi-state request: ${JSON.stringify(req.query, null, 2)}`)
+  const { authToken, device, status, time } = req.query;
 
   if (CONFIG.authToken && CONFIG.authToken !== authToken) {
-    logError(`authToken did not match ${CONFIG.authToken}`, req.body)
+    logError(`authToken did not match ${CONFIG.authToken}`, req.query)
     return res.sendStatus(403);
   }
 
   if (!CONFIG.devices.includes(device)) {
-    logError(`Unknown device: ${device}`, req.body)
+    logError(`Unknown device: ${device}`, req.query)
     return res.status(400).send({ error: "Unknown device" });
   }
 

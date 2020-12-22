@@ -29,6 +29,7 @@ function logError (message, data) {
 }
 
 app.post("/wifi-state", (req, res) => {
+  console.log(`[${(new Date()).toISOString()}] Received POST /wifi-state request: ${JSON.stringify(req.body, null, 2)}`)
   const { authToken, device, status, time } = req.body;
 
   if (CONFIG.authToken && CONFIG.authToken !== authToken) {
@@ -52,6 +53,7 @@ app.post("/wifi-state", (req, res) => {
   const devicesPresent = Object.values(state).reduce((count, { status }) => status === 'connected' ? count+1 : count, 0);
 
   fs.writeFileSync(fileName, JSON.stringify(state, null, 2))
+  console.log(`[${(new Date()).toISOString()}] Returned devicesPresent = ${devicesPresent}`);
   res.send({ value1: devicesPresent });
 })
 

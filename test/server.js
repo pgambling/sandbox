@@ -30,7 +30,7 @@ function logError (message, data) {
 
 app.get("/wifi-state", (req, res) => {
   console.log(`[${(new Date()).toISOString()}] Received GET /wifi-state request: ${JSON.stringify(req.query, null, 2)}`)
-  const { authToken, device, status, time } = req.query;
+  const { authToken, device, status } = req.query;
 
   if (CONFIG.authToken && CONFIG.authToken !== authToken) {
     logError(`authToken did not match ${CONFIG.authToken}`, req.query)
@@ -48,7 +48,7 @@ app.get("/wifi-state", (req, res) => {
     state = JSON.parse(fs.readFileSync(fileName));
   }
   
-  state[device] = { status, time, received: (new Date()).toString() };
+  state[device] = { status, received: (new Date()).toString() };
 
   const devicesPresent = Object.values(state).reduce((count, { status }) => status === 'connected' ? count+1 : count, 0);
 

@@ -54,7 +54,7 @@ app.get("/wifi-state", (req, res) => {
 
   fs.writeFileSync(fileName, JSON.stringify(state, null, 2))
   console.log(`[${(new Date()).toISOString()}] Returned devicesPresent = ${devicesPresent}`);
-  res.send({ value1: devicesPresent, Value1: devicesPresent });
+  res.send({ value1: devicesPresent });
 })
 
 console.log('Server listening on port 3000')
